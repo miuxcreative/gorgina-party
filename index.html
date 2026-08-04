@@ -502,7 +502,7 @@ input:focus,select:focus,textarea:focus{
       <div><dt>When</dt><dd>Sunday, August 23<small>Doors at noon. Hard stop at eight.</small></dd></div>
       <div><dt>Where</dt><dd>The backyard<small id="specAddr">Address goes here</small></dd></div>
       <div><dt>Wear</dt><dd id="specWear">Something you'd want photographed<small>It's grass and sunshine. Plan your shoes accordingly.</small></dd></div>
-      <div><dt>Bring</dt><dd id="specBring">Yourself, and an appetite that lasts eight hours.</dd></div>
+      <div><dt>Bring</dt><dd id="specBring">Yourself, and a will to party.</dd></div>
     </dl>
   </div>
 </section>
@@ -516,12 +516,12 @@ input:focus,select:focus,textarea:focus{
       <li data-photo="bar">
         <span class="n">01</span>
         <h3>The bar</h3>
-        <p>Open, stocked, and staffed by people who love Gina. Pace yourself — it's eight hours.</p>
+        <p>Open, stocked, and staffed by people who love Gina.</p>
       </li>
       <li data-photo="food">
         <span class="n">02</span>
         <h3>Food</h3>
-        <p>Real food, in waves, all afternoon.</p>
+        <p>Snacks early, a real meal later — not an all-day spread.</p>
       </li>
       <li data-photo="games">
         <span class="n">03</span>
@@ -557,11 +557,11 @@ input:focus,select:focus,textarea:focus{
   <div class="wrap">
     <p class="label sec__label foil">Getting here</p>
     <h2 class="title">Let someone <i>else</i> drive</h2>
-    <p class="sec__lede">There's an open bar and not much parking. The math writes itself.</p>
+    <p class="sec__lede">You'll have a drink or two, and there's not much parking. The math writes itself.</p>
 
     <div class="ride">
       <h3>Uber or Lyft, ideally</h3>
-      <p>No parking hunt, no keys to think about, no cutting yourself off at two in the afternoon. Drop-off is right out front.</p>
+      <p>No parking hunt, no keys to think about, and drop-off is right out front.</p>
       <div class="btnrow" style="justify-content:flex-start">
         <button class="btn btn--glass" type="button" id="copyAddr">Copy the address</button>
         <a class="btn btn--glass" id="mapsLink" href="#" target="_blank" rel="noopener">Open in Maps</a>
@@ -583,10 +583,6 @@ input:focus,select:focus,textarea:focus{
     <ul class="know">
       <li><span class="k">01</span><div><b>It's August in Florida.</b><span>Sunscreen, sunglasses, and a hair plan. There's shade, but not infinite shade.</span></div></li>
       <li><span class="k">02</span><div><b>Grass beats heels.</b><span>Flats, sneakers, or something you can dance in.</span></div></li>
-      <li><span class="k">03</span><div><b>Kids</b><span id="kidsText">are welcome — tell us how many so we can plan.</span></div></li>
-      <li><span class="k">04</span><div><b>Gifts</b><span id="giftText">aren't necessary. Show up, eat, dance — that's the gift.</span></div></li>
-      <li><span class="k">05</span><div><b>Rain plan exists.</b><span>If a storm rolls through we move under cover and keep going.</span></div></li>
-      <li><span class="k">06</span><div><b>Photograph everything.</b><span>Post whatever you like — just leave the address off the internet.</span></div></li>
     </ul>
   </div>
 </section>
@@ -597,7 +593,7 @@ input:focus,select:focus,textarea:focus{
     <p class="label sec__label foil" style="margin-bottom:1.5rem">The one rule</p>
     <p class="rule__time foil">8:00</p>
     <h2 class="rule__title">and then the lights go out</h2>
-    <p>Eight o'clock is a real stop, not a suggestion. Our neighbors have been genuinely lovely about this, and the fastest way to lose a backyard is to become the house that goes until midnight.</p>
+    <p>Eight o'clock is a real stop — HOA rules, not us being dramatic. Our neighbors are great about it; let's keep it that way. Come early and get the whole day out of it.</p>
     <hr class="rule__hr">
   </div>
 </section>
@@ -606,7 +602,7 @@ input:focus,select:focus,textarea:focus{
 <section class="rsvp" id="rsvp">
   <div class="wrap">
     <div class="card">
-      <p class="card__note">Thirty seconds. The head count decides how much food and ice we buy, so please be honest about the plus-ones.</p>
+      <p class="card__note">Thirty seconds. The head count decides how much food and ice we buy — so let us know ASAP.</p>
 
       <form id="rsvpForm" novalidate>
         <div class="field">
@@ -623,14 +619,6 @@ input:focus,select:focus,textarea:focus{
           </div>
         </fieldset>
 
-        <div class="field">
-          <label for="f-party">How many total, including you?</label>
-          <select id="f-party" name="party_size">
-            <option value="1">Just me</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6+">6 or more</option>
-          </select>
-        </div>
-
         <div class="field" id="kidsField">
           <label for="f-kids">Any kids coming?</label>
           <select id="f-kids" name="kids">
@@ -643,7 +631,7 @@ input:focus,select:focus,textarea:focus{
           <select id="f-arrival" name="arrival">
             <option value="">Not sure yet</option>
             <option value="12-1 opening">Noon to one — opening</option>
-            <option value="1-3 peak sun">One to three — peak sun</option>
+            <option value="1-3 full swing">One to three — full swing</option>
             <option value="3-5 second wind">Three to five — second wind</option>
             <option value="5-7 golden hour">Five to seven — golden hour</option>
           </select>
@@ -713,9 +701,8 @@ const CONFIG = {
   address:      "123 Your Street, West Palm Beach, FL 33401",
   hostPhone:    "",
   dressCode:    "Something you'd want photographed",
-  bringLine:    "Yourself, and an appetite that lasts eight hours.",
+  bringLine:    "Yourself, and a will to party.",
   kidsWelcome:  true,
-  gifts:        "none",          // "none" | "welcome"
   startISO:     "2026-08-23T12:00:00-04:00",
   endISO:       "2026-08-23T20:00:00-04:00",
 
@@ -849,11 +836,7 @@ if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone');
   document.getElementById('mapsLink2').href = mapsHref;
 
   if(!CONFIG.kidsWelcome){
-    document.getElementById('kidsText').textContent = "— this one's a grown-ups day. Get the sitter, you've earned it.";
     document.getElementById('kidsField').hidden = true;
-  }
-  if(CONFIG.gifts === 'welcome'){
-    document.getElementById('giftText').textContent = "are welcome but never expected. Gina genuinely just wants the turnout.";
   }
   if(CONFIG.hostPhone){
     const tel = CONFIG.hostPhone.replace(/[^0-9+]/g,'');
@@ -998,7 +981,7 @@ form.addEventListener('submit', async function(e){
 
   const payload = new URLSearchParams();
   payload.append('timestamp', new Date().toISOString());
-  ['name','party_size','kids','arrival','contact','note'].forEach(function(k){
+  ['name','kids','arrival','contact','note'].forEach(function(k){
     const el = form.elements[k];
     payload.append(k, el ? el.value : '');
   });
