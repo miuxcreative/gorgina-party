@@ -327,24 +327,6 @@ body::after{
   color:var(--cyan);padding-top:.3rem;width:1.4rem;
 }
 
-/* ═══ the one rule — deepest point of the page ═══ */
-.rule{
-  position:relative;text-align:center;padding:5rem 0 4rem;
-  background:radial-gradient(120% 70% at 50% 0%, rgba(59,123,255,.22), transparent 62%),
-             linear-gradient(180deg, transparent, #02050E 70%);
-}
-.rule__time{
-  margin:0;font-family:var(--f-display);font-weight:900;font-variation-settings:'opsz' 96;
-  font-size:clamp(4.5rem,25vw,7.5rem);line-height:.85;letter-spacing:-.04em;
-}
-.rule__title{
-  margin:1rem 0 1.25rem;font-family:var(--f-display);font-style:italic;font-weight:400;
-  font-variation-settings:'opsz' 60;font-size:clamp(1.5rem,7vw,2rem);line-height:1.15;
-}
-.rule p{margin:0 auto;max-width:25rem;color:var(--pearl-70);font-size:.9375rem}
-.rule p + p{margin-top:.9rem}
-.rule__hr{width:3rem;height:1px;background:var(--foil);margin:2rem auto 0;border:0}
-
 /* ═══ RSVP ═══ */
 .rsvp{background:#02050E;padding:1rem 0 3.5rem}
 .card{
@@ -583,16 +565,6 @@ input:focus,select:focus,textarea:focus{
   </div>
 </section>
 
-<!-- ════ the one rule ════ -->
-<section class="rule">
-  <div class="wrap">
-    <p class="label sec__label foil" style="margin-bottom:1.5rem">The one rule</p>
-    <p class="rule__time foil">8:00</p>
-    <h2 class="rule__title">and then the lights go out</h2>
-    <p>Eight o'clock is a real stop — HOA rules, not us being dramatic. Come early and get the whole day out of it.</p>
-    <hr class="rule__hr">
-  </div>
-</section>
 
 <!-- ════ RSVP ════ -->
 <section class="rsvp" id="rsvp">
@@ -664,7 +636,7 @@ input:focus,select:focus,textarea:focus{
       <div class="done" id="done" hidden>
         <div class="done__mark" aria-hidden="true"></div>
         <h3 id="doneTitle">You're in</h3>
-        <p id="doneMsg">Sunday, August 23, two to eight. Clear your calendar — or just tap the button below — and don't be the person who arrives at 7:45.</p>
+        <p id="doneMsg">Sunday, August 23, two to eight. Clear your calendar, or just tap the button below. See you at the party.</p>
         <div class="btnrow">
           <button class="btn btn--glass" type="button" id="calBtn2">Add to calendar</button>
           <a class="btn btn--glass" id="mapsLink2" href="#" target="_blank" rel="noopener">Open in Maps</a>
