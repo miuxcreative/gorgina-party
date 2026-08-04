@@ -500,7 +500,7 @@ input:focus,select:focus,textarea:focus{
       <li data-photo="music">
         <span class="n">04</span>
         <h3>Music</h3>
-        <p>Request a song below. It goes in the playlist.</p>
+        <p>Hour-long mixes, queued and ready. Happy vibes only.</p>
       </li>
       <li data-photo="dancing">
         <span class="n">05</span>
@@ -526,17 +526,20 @@ input:focus,select:focus,textarea:focus{
   <div class="wrap">
     <p class="label sec__label foil">Getting here</p>
     <h2 class="title">Let someone <i>else</i> drive</h2>
-    <p class="sec__lede">There's an open bar and roughly four parking spots. The math writes itself.</p>
+    <p class="sec__lede">There's an open bar and not much parking. The math writes itself.</p>
 
     <div class="ride">
       <h3>Uber or Lyft, ideally</h3>
       <p>No parking hunt, no keys to think about, no cutting yourself off at two in the afternoon. Drop-off is right out front.</p>
-      <button class="btn btn--glass" type="button" id="copyAddr">Copy the address</button>
+      <div class="btnrow" style="justify-content:flex-start">
+        <button class="btn btn--glass" type="button" id="copyAddr">Copy the address</button>
+        <a class="btn btn--glass" id="mapsLink" href="#" target="_blank" rel="noopener">Open in Maps</a>
+      </div>
     </div>
 
     <div class="panel">
       <p style="margin:0 0 .7rem;font-size:.9375rem;color:var(--pearl-70)" id="parkText"></p>
-      <p style="margin:0;font-size:.9375rem;color:var(--pearl-70)"><b style="font-weight:500;color:var(--pearl)">Carpool if you can.</b> Say so on the RSVP and we'll connect people coming from the same side of town.</p>
+      <p style="margin:0;font-size:.9375rem;color:var(--pearl-70)"><b style="font-weight:500;color:var(--pearl)">Carpool if you can.</b> Say so on the RSVP — if it lines up, we'll try to connect you with people coming from your side of town.</p>
     </div>
   </div>
 </section>
@@ -625,21 +628,11 @@ input:focus,select:focus,textarea:focus{
             <label class="choice"><input type="radio" name="transport" value="Carpooling"><span>Carpooling</span></label>
             <label class="choice"><input type="radio" name="transport" value="Walking"><span>Walking</span></label>
           </div>
-          <p class="nudge" id="driveNudge" hidden>Parking is genuinely tight and the bar is genuinely open. If you can swing a ride share, do — and if you drive, leaving the car overnight is completely fine.</p>
+          <p class="nudge" id="driveNudge" hidden>Parking is genuinely tight and the bar is genuinely open. If you can swing a ride share, do.</p>
         </fieldset>
 
         <div class="field">
-          <label for="f-diet">Anything you don't eat?<span class="hint">Allergies, vegetarian, whatever we should know.</span></label>
-          <input type="text" id="f-diet" name="dietary" placeholder="Optional">
-        </div>
-
-        <div class="field">
-          <label for="f-song">One song that has to play<span class="hint">It goes straight into the playlist.</span></label>
-          <input type="text" id="f-song" name="song" placeholder="Artist — Track">
-        </div>
-
-        <div class="field">
-          <label for="f-photo">A picture of yourself<span class="hint">The more unhinged the better. Goes up on the party wall. Optional.</span></label>
+          <label for="f-photo">A picture of yourself<span class="hint">The more unhinged the better. Optional — goes on the board with whatever you write below.</span></label>
           <label class="upload" id="uploadWrap">
             <input type="file" id="f-photo" accept="image/*">
             <span class="upload__box">
@@ -650,13 +643,13 @@ input:focus,select:focus,textarea:focus{
         </div>
 
         <div class="field">
-          <label for="f-contact">Phone or email<span class="hint">Only if plans change.</span></label>
-          <input type="text" id="f-contact" name="contact" placeholder="Optional">
+          <label for="f-note">A message for Gina<span class="hint">This gets printed — with your photo, if you added one — and pinned to a board at the party. Make it good.</span></label>
+          <textarea id="f-note" name="note" placeholder="Optional"></textarea>
         </div>
 
         <div class="field">
-          <label for="f-note">Anything for Gina?</label>
-          <textarea id="f-note" name="note" placeholder="Optional"></textarea>
+          <label for="f-contact">Phone or email<span class="hint">Only if plans change.</span></label>
+          <input type="text" id="f-contact" name="contact" placeholder="Optional">
         </div>
 
         <button class="btn btn--full btn--lg" type="submit" id="submitBtn">Send my RSVP</button>
@@ -802,7 +795,9 @@ if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone');
   document.getElementById('specBring').textContent = CONFIG.bringLine;
   document.getElementById('rsvpBy').textContent = CONFIG.rsvpBy;
   document.getElementById('parkText').textContent =
-    "There are about " + CONFIG.parkingSpots + " spots, then it's street parking — and the neighbors need their spaces. Park legally, don't block driveways, and leaving the car overnight is completely fine.";
+    "There are a few spots here, plus a few more in guest parking. Park legally and be considerate of the neighbors' space.";
+  document.getElementById('mapsLink').href =
+    'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.address);
 
   if(!CONFIG.kidsWelcome){
     document.getElementById('kidsText').textContent = "— this one's a grown-ups day. Get the sitter, you've earned it.";
@@ -961,7 +956,7 @@ form.addEventListener('submit', async function(e){
 
   const payload = new URLSearchParams();
   payload.append('timestamp', new Date().toISOString());
-  ['name','party_size','kids','arrival','dietary','song','contact','note'].forEach(function(k){
+  ['name','party_size','kids','arrival','contact','note'].forEach(function(k){
     const el = form.elements[k];
     payload.append(k, el ? el.value : '');
   });
