@@ -184,10 +184,8 @@ Everything editable lives in one block at the bottom of `gorgina-rsvp.html`:
 | `endpoint` | The Apps Script URL above. Blank = form runs in demo mode and logs to console. |
 | `address` | Full address. Shows in the details, the copy button, and the calendar file. |
 | `hostPhone` | Optional. If filled, adds a "text us" line in the footer. |
-| `rsvpBy` | The date shown above the form. |
 | `dressCode` | The "Wear" line. |
 | `bringLine` | The "Bring" line. |
-| `parkingSpots` | Number quoted in the parking paragraph. |
 | `kidsWelcome` | `false` hides the kids dropdown and swaps the copy to a grown-ups-only note. |
 | `gifts` | `"none"` or `"welcome"`. |
 | `startISO` / `endISO` | Used by the countdown and the calendar file. Already set to Aug 23, 12–8 ET. |

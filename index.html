@@ -575,8 +575,6 @@ input:focus,select:focus,textarea:focus{
 <section class="rsvp" id="rsvp">
   <div class="wrap">
     <div class="card">
-      <p class="label foil">RSVP by <span id="rsvpBy">August 16</span></p>
-      <h2 class="card__title">Are you coming?</h2>
       <p class="card__note">Thirty seconds. The head count decides how much food and ice we buy, so please be honest about the plus-ones.</p>
 
       <form id="rsvpForm" novalidate>
@@ -662,7 +660,7 @@ input:focus,select:focus,textarea:focus{
         <p id="doneMsg">Sunday, August 23, noon to eight. Clear your calendar — or just tap the button below — and don't be the person who arrives at 7:45.</p>
         <div class="btnrow">
           <button class="btn btn--glass" type="button" id="calBtn2">Add to calendar</button>
-          <button class="btn btn--glass" type="button" id="shareBtn">Share the invite</button>
+          <a class="btn btn--glass" id="mapsLink2" href="#" target="_blank" rel="noopener">Open in Maps</a>
         </div>
       </div>
     </div>
@@ -683,10 +681,8 @@ const CONFIG = {
 
   address:      "123 Your Street, West Palm Beach, FL 33401",
   hostPhone:    "",
-  rsvpBy:       "August 16",
   dressCode:    "Something you'd want photographed",
   bringLine:    "Yourself, and an appetite that lasts eight hours.",
-  parkingSpots: 4,
   kidsWelcome:  true,
   gifts:        "none",          // "none" | "welcome"
   startISO:     "2026-08-23T12:00:00-04:00",
@@ -793,11 +789,11 @@ if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone');
   document.getElementById('specAddr').textContent = CONFIG.address;
   document.getElementById('specWear').firstChild.textContent = CONFIG.dressCode;
   document.getElementById('specBring').textContent = CONFIG.bringLine;
-  document.getElementById('rsvpBy').textContent = CONFIG.rsvpBy;
   document.getElementById('parkText').textContent =
     "There are a few spots here, plus a few more in guest parking. Park legally and be considerate of the neighbors' space.";
-  document.getElementById('mapsLink').href =
-    'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.address);
+  const mapsHref = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(CONFIG.address);
+  document.getElementById('mapsLink').href = mapsHref;
+  document.getElementById('mapsLink2').href = mapsHref;
 
   if(!CONFIG.kidsWelcome){
     document.getElementById('kidsText').textContent = "— this one's a grown-ups day. Get the sitter, you've earned it.";
@@ -868,13 +864,6 @@ function downloadICS(){
 }
 document.getElementById('calBtn').addEventListener('click', downloadICS);
 document.getElementById('calBtn2').addEventListener('click', downloadICS);
-
-/* ── share ── */
-document.getElementById('shareBtn').addEventListener('click', async function(){
-  const data = { title:'GORGINA', text:'Gina turns thirty-two. Sunday Aug 23, noon to eight. RSVP:', url:location.href.split('#')[0] };
-  if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
-  else { navigator.clipboard?.writeText(data.url); this.textContent = 'Link copied'; }
-});
 
 /* ── driving nudge ── */
 document.querySelectorAll('input[name=transport]').forEach(function(r){
