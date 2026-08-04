@@ -186,8 +186,7 @@ Everything editable lives in one block at the bottom of `gorgina-rsvp.html`:
 | `hostPhone` | Optional. If filled, adds a "text us" line in the footer. |
 | `dressCode` | The "Wear" line. |
 | `bringLine` | The "Bring" line. |
-| `kidsWelcome` | `false` hides the kids dropdown on the RSVP form. |
-| `startISO` / `endISO` | Used by the countdown and the calendar file. Already set to Aug 23, 12–8 ET. |
+| `startISO` / `endISO` | Used by the countdown and the calendar file. Already set to Aug 23, 2–8 ET. |
 
 ---
 

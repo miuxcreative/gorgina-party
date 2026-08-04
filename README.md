@@ -1,6 +1,6 @@
 # Gorgina
 
-Gina's 32nd birthday — backyard day party, Sunday August 23, noon to eight.
+Gina's 32nd birthday — backyard day party, Sunday August 23, two to eight.
 
 - `index.html` — the RSVP page (this is what GitHub Pages serves at the root)
 - `flyer.html` — the shareable 1080×1350 flyer, with PNG export

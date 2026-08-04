@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GORGINA — Gina's 32nd · Sunday, August 23</title>
-<meta name="description" content="Gina turns thirty-two. Backyard day party, Sunday August 23, noon to eight. Bar, food, games, music, dancing.">
+<meta name="description" content="Gina turns thirty-two. Backyard day party, Sunday August 23, two to eight. Bar, food, games, music, dancing.">
 <meta name="theme-color" content="#050A18">
 <meta property="og:title" content="GORGINA">
-<meta property="og:description" content="Gina turns thirty-two. Sunday, August 23 · Noon to eight.">
+<meta property="og:description" content="Gina turns thirty-two. Sunday, August 23 · Two to eight.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://miuxcreative.github.io/gorgina-party/">
 <meta property="og:image" content="https://miuxcreative.github.io/gorgina-party/img/og.jpg">
@@ -15,7 +15,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GORGINA">
-<meta name="twitter:description" content="Gina turns thirty-two. Sunday, August 23 · Noon to eight.">
+<meta name="twitter:description" content="Gina turns thirty-two. Sunday, August 23 · Two to eight.">
 <meta name="twitter:image" content="https://miuxcreative.github.io/gorgina-party/img/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
 /* ═══════════════════════════════════════════════════════════
    GORGINA — iridescent
    Base is deep midnight. Light moves across it like oil on water.
-   The page travels noon → 8 PM: bright chrome at the top,
+   The page travels two → 8 PM: bright chrome at the top,
    near-black by the time you reach the one rule.
    ═══════════════════════════════════════════════════════════ */
 :root{
@@ -109,7 +109,7 @@ body::after{
 }
 .title i{font-style:italic;font-weight:400}
 
-/* ─── the rail: noon runs out ─── */
+/* ─── the rail: the day runs out ─── */
 .rail{
   position:sticky;top:0;z-index:60;
   background:rgba(5,10,24,.72);
@@ -207,7 +207,6 @@ body::after{
   font-family:var(--f-mono);font-size:1rem;font-weight:400;line-height:1.15;
 }
 .hero__count b i{font-style:normal;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--pearl-45);margin-top:.25rem}
-.hero__scroll{margin:.5rem 0 0;font-family:var(--f-mono);font-size:.5625rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pearl-45)}
 
 /* ═══ buttons ═══ */
 .btn{
@@ -235,7 +234,6 @@ body::after{
 
 /* ═══ gallery marquee ═══ */
 .strip{padding:2.5rem 0 .5rem;overflow:hidden}
-.strip__label{text-align:center;color:var(--pearl-45);margin:0 0 1.25rem}
 .strip__track{display:flex;gap:.55rem;width:max-content;animation:slide 44s linear infinite}
 .strip:hover .strip__track{animation-play-state:paused}
 @keyframes slide{to{transform:translateX(-50%)}}
@@ -458,8 +456,8 @@ input:focus,select:focus,textarea:focus{
 <!-- ════ the day, running out ════ -->
 <div class="rail">
   <div class="rail__in">
-    <span class="rail__cap">12 PM</span>
-    <div class="rail__track" role="img" aria-label="The party runs from noon to a hard stop at 8 PM">
+    <span class="rail__cap">2 PM</span>
+    <div class="rail__track" role="img" aria-label="The party runs from two to a hard stop at 8 PM">
       <div class="rail__fill"></div>
       <div class="rail__end"></div>
       <div class="rail__dot"></div>
@@ -476,19 +474,17 @@ input:focus,select:focus,textarea:focus{
     <span class="hero__feeling">Feeling</span>
     <h1 class="hero__name foil">Gorgina</h1>
     <span class="hero__age"><i>thirty-two</i></span>
-    <p class="hero__when">Sunday, August 23 &nbsp;·&nbsp; <b>Noon to eight</b></p>
+    <p class="hero__when">Sunday, August 23 &nbsp;·&nbsp; <b>Two to eight</b></p>
     <div class="hero__count" id="countdown"></div>
     <div class="btnrow">
       <a class="btn btn--lg" href="#rsvp">RSVP</a>
       <button class="btn btn--glass" type="button" id="calBtn">Add to calendar</button>
     </div>
-    <p class="hero__scroll">Scroll — the day runs out</p>
   </div>
 </header>
 
 <!-- ════ photo strip ════ -->
 <section class="strip" id="strip" hidden>
-  <p class="label strip__label">The birthday girl, exhibits A through J</p>
   <div class="strip__track" id="stripTrack"></div>
 </section>
 
@@ -499,7 +495,7 @@ input:focus,select:focus,textarea:focus{
     <h2 class="title">Quick facts, <i>zero fluff</i></h2>
     <dl class="spec">
       <div><dt>Who</dt><dd>Gina. Turning thirty-two. Insisting it's low-key.</dd></div>
-      <div><dt>When</dt><dd>Sunday, August 23<small>Doors at noon. Hard stop at eight.</small></dd></div>
+      <div><dt>When</dt><dd>Sunday, August 23<small>Doors at two. Hard stop at eight.</small></dd></div>
       <div><dt>Where</dt><dd>The backyard<small id="specAddr">Address goes here</small></dd></div>
       <div><dt>Wear</dt><dd id="specWear">Whatever you feel Gorgina in<small>It's grass and sunshine. Plan your shoes accordingly.</small></dd></div>
       <div><dt>Bring</dt><dd id="specBring">Yourself, and a will to party.</dd></div>
@@ -593,7 +589,7 @@ input:focus,select:focus,textarea:focus{
     <p class="label sec__label foil" style="margin-bottom:1.5rem">The one rule</p>
     <p class="rule__time foil">8:00</p>
     <h2 class="rule__title">and then the lights go out</h2>
-    <p>Eight o'clock is a real stop — HOA rules, not us being dramatic. Our neighbors are great about it; let's keep it that way. Come early and get the whole day out of it.</p>
+    <p>Eight o'clock is a real stop — HOA rules, not us being dramatic. Come early and get the whole day out of it.</p>
     <hr class="rule__hr">
   </div>
 </section>
@@ -619,21 +615,13 @@ input:focus,select:focus,textarea:focus{
           </div>
         </fieldset>
 
-        <div class="field" id="kidsField">
-          <label for="f-kids">Any kids coming?</label>
-          <select id="f-kids" name="kids">
-            <option value="0">No kids</option><option value="1">1</option><option value="2">2</option><option value="3+">3 or more</option>
-          </select>
-        </div>
-
         <div class="field">
-          <label for="f-arrival">When are you landing?<span class="hint">Helps us stagger the food.</span></label>
+          <label for="f-arrival">When are you arriving?<span class="hint">Helps us plan the festivities.</span></label>
           <select id="f-arrival" name="arrival">
-            <option value="">Not sure yet</option>
-            <option value="12-1 opening">Noon to one — opening</option>
-            <option value="1-3 full swing">One to three — full swing</option>
-            <option value="3-5 second wind">Three to five — second wind</option>
-            <option value="5-7 golden hour">Five to seven — golden hour</option>
+            <option value="">I don't know</option>
+            <option value="2-4 earlybird">Two to four — earlybird</option>
+            <option value="4-6 sweet spot">Four to six — sweet spot</option>
+            <option value="6-8 fashionably late">Six to eight — fashionably late</option>
           </select>
         </div>
 
@@ -676,7 +664,7 @@ input:focus,select:focus,textarea:focus{
       <div class="done" id="done" hidden>
         <div class="done__mark" aria-hidden="true"></div>
         <h3 id="doneTitle">You're in</h3>
-        <p id="doneMsg">Sunday, August 23, noon to eight. Clear your calendar — or just tap the button below — and don't be the person who arrives at 7:45.</p>
+        <p id="doneMsg">Sunday, August 23, two to eight. Clear your calendar — or just tap the button below — and don't be the person who arrives at 7:45.</p>
         <div class="btnrow">
           <button class="btn btn--glass" type="button" id="calBtn2">Add to calendar</button>
           <a class="btn btn--glass" id="mapsLink2" href="#" target="_blank" rel="noopener">Open in Maps</a>
@@ -702,8 +690,7 @@ const CONFIG = {
   hostPhone:    "",
   dressCode:    "Whatever you feel Gorgina in",
   bringLine:    "Yourself, and a will to party.",
-  kidsWelcome:  true,
-  startISO:     "2026-08-23T12:00:00-04:00",
+  startISO:     "2026-08-23T14:00:00-04:00",
   endISO:       "2026-08-23T20:00:00-04:00",
 
   /* ── PHOTOS ────────────────────────────────────────────────
@@ -835,9 +822,6 @@ if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone');
   document.getElementById('mapsLink').href = mapsHref;
   document.getElementById('mapsLink2').href = mapsHref;
 
-  if(!CONFIG.kidsWelcome){
-    document.getElementById('kidsField').hidden = true;
-  }
   if(CONFIG.hostPhone){
     const tel = CONFIG.hostPhone.replace(/[^0-9+]/g,'');
     const line = document.getElementById('footPhone');
@@ -891,7 +875,7 @@ function downloadICS(){
     'DTSTART:'+icsStamp(CONFIG.startISO),'DTEND:'+icsStamp(CONFIG.endISO),
     'SUMMARY:GORGINA \u2014 Gina\u2019s 32nd',
     'LOCATION:'+CONFIG.address.replace(/,/g,'\\,'),
-    'DESCRIPTION:Backyard day party. Noon to eight\\, hard stop at 8. Bar\\, food\\, games\\, music\\, dancing. Take an Uber.',
+    'DESCRIPTION:Backyard day party. Two to eight\\, hard stop at 8. Bar\\, food\\, games\\, music\\, dancing. Take an Uber.',
     'END:VEVENT','END:VCALENDAR'].join('\r\n');
   const url = URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
   const a = document.createElement('a');
@@ -981,7 +965,7 @@ form.addEventListener('submit', async function(e){
 
   const payload = new URLSearchParams();
   payload.append('timestamp', new Date().toISOString());
-  ['name','kids','arrival','contact','note'].forEach(function(k){
+  ['name','arrival','contact','note'].forEach(function(k){
     const el = form.elements[k];
     payload.append(k, el ? el.value : '');
   });
