@@ -39,6 +39,13 @@
     var(--aqua) 0%, var(--cyan) 20%, var(--azure) 42%,
     var(--iris) 63%, var(--rose) 79%, var(--cyan) 100%);
 
+  /* extra-vivid pass for the wordmark — same family, more color stops */
+  --orchid:#C77DFF;
+  --foil-spark:linear-gradient(112deg,
+    var(--aqua) 0%, var(--cyan) 14%, var(--azure) 28%,
+    var(--iris) 42%, var(--orchid) 54%, var(--rose) 66%,
+    var(--iris) 80%, var(--cyan) 92%, var(--aqua) 100%);
+
   --glass:rgba(255,255,255,.055);
   --glass-line:rgba(255,255,255,.14);
   --glass-line-hi:rgba(255,255,255,.26);
@@ -142,6 +149,21 @@ body::after{
    flat wash first, then the usual hero__media::after gradient on top */
 .hero__collage::after{content:"";position:absolute;inset:0;background:rgba(5,10,24,.52)}
 @media (min-width:600px){.hero__collage{grid-template-columns:repeat(6,1fr)}}
+
+/* ═══ intro: photos pop in, settle, then the invite reveals ═══ */
+.hero__collage{transition:opacity 1300ms ease}
+.hero__collage.is-settled{opacity:.6}
+.hero__collage figure{opacity:0;transform:scale(.5)}
+.hero__collage figure.is-in{animation:collagePop 560ms cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes collagePop{to{opacity:1;transform:scale(1)}}
+
+.hero__in{opacity:0;transform:translateY(16px)}
+.hero__in.is-in{opacity:1;transform:none;transition:opacity 900ms ease,transform 900ms cubic-bezier(.16,1,.3,1)}
+
+@media (prefers-reduced-motion:reduce){
+  .hero__collage,.hero__collage figure,.hero__in{transition:none;animation:none;opacity:1;transform:none}
+}
+
 .hero__in{position:relative;z-index:2;text-align:center}
 .hero__eyebrow{color:var(--pearl-70);margin:0 0 1.75rem}
 .hero__feeling{
@@ -157,6 +179,7 @@ body::after{
   font-size:clamp(3.3rem,16.5vw,5.95rem);line-height:.9;letter-spacing:-.03em;
   text-transform:uppercase;
 }
+.hero__name.foil{background-image:var(--foil-spark);animation-duration:7s}
 .hero__age{
   display:block;margin:.5rem 0 0;font-family:var(--f-display);
   font-style:italic;font-weight:400;font-variation-settings:'opsz' 40;
@@ -699,13 +722,13 @@ const CONFIG = {
     hero: "",                    // single hero photo — used only if heroCollage below is empty
 
     heroCollage: [                // wall of photos behind the hero. 6–10 looks best, first one goes big.
-      // "img/1.jpg",
-      // "img/2.jpg",
+      "img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg",
+      "img/5.jpg", "img/6.jpg", "img/7.jpg", "img/8.jpg",
     ],
 
     strip: [                     // the scrolling band. 6–12 looks best.
-      // "img/1.jpg",
-      // "img/2.jpg",
+      "img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg",
+      "img/5.jpg", "img/6.jpg", "img/7.jpg", "img/8.jpg",
     ],
 
     tiles: {                     // backgrounds behind each card, all optional
@@ -723,34 +746,56 @@ const CONFIG = {
 /* ── photo treatment ── */
 if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone'); }
 
-/* ── hero photo / collage ── */
+/* ── hero photo / collage, with a pop-in → settle → reveal intro ── */
 (function heroPhoto(){
   const el = document.getElementById('heroMedia');
+  const heroIn = document.querySelector('.hero__in');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const collage = (CONFIG.photos.heroCollage || []).filter(Boolean);
+  function revealText(){ heroIn.classList.add('is-in'); }
 
   if(collage.length){
     const grid = document.createElement('div');
     grid.className = 'hero__collage';
-    collage.slice(0, 10).forEach(function(src){
+    const figs = collage.slice(0, 10).map(function(src){
       const fig = document.createElement('figure');
       const img = new Image();
-      img.src = src; img.alt = ''; img.loading = 'lazy';
+      img.src = src; img.alt = ''; img.loading = 'eager';
       fig.appendChild(img);
       grid.appendChild(fig);
+      return fig;
     });
     el.classList.remove('hero__media--empty');
     el.prepend(grid);
+
+    if(reduceMotion){
+      figs.forEach(function(fig){ fig.classList.add('is-in'); });
+      revealText();
+      return;
+    }
+
+    // pow pow pow: each tile pops in on a fast stagger, then the whole
+    // wall settles (dims) and the invite fades in on top of it
+    const stagger = 90, popDuration = 560, startDelay = 150;
+    figs.forEach(function(fig, i){
+      setTimeout(function(){ fig.classList.add('is-in'); }, startDelay + i * stagger);
+    });
+    const sequenceEnd = startDelay + (figs.length - 1) * stagger + popDuration;
+    setTimeout(function(){ grid.classList.add('is-settled'); }, sequenceEnd);
+    setTimeout(revealText, sequenceEnd + 250);
     return;
   }
 
-  if(!CONFIG.photos.hero) return;
-  const img = new Image();
-  img.src = CONFIG.photos.hero;
-  img.alt = '';
-  img.onload = function(){
-    el.classList.remove('hero__media--empty');
-    el.prepend(img);
-  };
+  if(CONFIG.photos.hero){
+    const img = new Image();
+    img.src = CONFIG.photos.hero;
+    img.alt = '';
+    img.onload = function(){
+      el.classList.remove('hero__media--empty');
+      el.prepend(img);
+    };
+  }
+  revealText();
 })();
 
 /* ── photo strip ── */
