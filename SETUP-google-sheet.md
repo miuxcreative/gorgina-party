@@ -114,9 +114,18 @@ Save it (⌘S). Name the project anything.
 
 > **Already have this deployed without photo support?** Replace the script with
 > the version above and redeploy (see the version-bump note in step 3) — the
-> URL stays the same, nothing else changes. The next deploy will ask you to
-> re-authorize because the script now touches Drive, not just Sheets; that's
-> expected, click through it the same way as the first authorization.
+> URL stays the same, nothing else changes. The next deploy *should* prompt
+> you to re-authorize because the script now touches Drive, not just Sheets —
+> but that prompt doesn't always reliably grant a newly-added scope. If a
+> submitted photo ends up as `upload failed: You do not have permission to
+> call DriveApp...` instead of a real link, that's exactly this: paste a
+> throwaway function like
+> ```javascript
+> function authorizeDrive() { DriveApp.getRootFolder(); }
+> ```
+> pick it from the function dropdown next to **Debug**, click **Run**, and
+> approve the Drive permission popup that appears. Delete the function (or
+> leave it, it's harmless) and deploy a new version again.
 
 ## 3. Deploy it
 
