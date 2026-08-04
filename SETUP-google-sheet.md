@@ -15,18 +15,19 @@ In the sheet: **Extensions → Apps Script**. Delete whatever's in the editor an
 
 ```javascript
 // Gorgina RSVP → Google Sheet
-// Receives form posts and appends a row.
+// Receives form posts, appends a row, and saves any uploaded photo to Drive.
 
 const SHEET_NAME = 'RSVPs';
+const PHOTO_FOLDER_NAME = 'Gorgina RSVP Photos';
 
 const FIELDS = [
   'timestamp', 'name', 'attending', 'party_size', 'kids',
-  'arrival', 'transport', 'dietary', 'song', 'contact', 'note'
+  'arrival', 'transport', 'dietary', 'song', 'contact', 'note', 'photo'
 ];
 
 const HEADERS = [
   'Submitted', 'Name', 'Attending', 'Party size', 'Kids',
-  'Arriving', 'Getting here', 'Dietary', 'Song request', 'Contact', 'Note for Gina'
+  'Arriving', 'Getting here', 'Dietary', 'Song request', 'Contact', 'Note for Gina', 'Photo'
 ];
 
 function doPost(e) {
@@ -50,9 +51,14 @@ function doPost(e) {
     }
 
     const params = (e && e.parameter) ? e.parameter : {};
+    const photoUrl = savePhoto_(params.photo, params.name);
+
     const row = FIELDS.map(function (key) {
       if (key === 'timestamp') {
         return new Date();
+      }
+      if (key === 'photo') {
+        return photoUrl;
       }
       return params[key] || '';
     });
@@ -73,12 +79,44 @@ function doPost(e) {
   }
 }
 
+// Decodes the data: URL the page sends and saves it into a Drive folder.
+// Returns a viewable link, or '' if no photo was submitted.
+function savePhoto_(dataUrl, name) {
+  if (!dataUrl) return '';
+
+  const match = String(dataUrl).match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!match) return '';
+
+  try {
+    const mimeType = match[1];
+    const ext = mimeType.split('/')[1].replace('jpeg', 'jpg');
+    const bytes = Utilities.base64Decode(match[2]);
+    const safeName = (name || 'guest').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const blob = Utilities.newBlob(bytes, mimeType, safeName + '-' + Date.now() + '.' + ext);
+
+    const existing = DriveApp.getFoldersByName(PHOTO_FOLDER_NAME);
+    const folder = existing.hasNext() ? existing.next() : DriveApp.createFolder(PHOTO_FOLDER_NAME);
+
+    const file = folder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    return 'https://drive.google.com/uc?id=' + file.getId();
+  } catch (err) {
+    return 'upload failed: ' + err.message;
+  }
+}
+
 function doGet() {
   return ContentService.createTextOutput('Gorgina RSVP endpoint is alive.');
 }
 ```
 
 Save it (⌘S). Name the project anything.
+
+> **Already have this deployed without photo support?** Replace the script with
+> the version above and redeploy (see the version-bump note in step 3) — the
+> URL stays the same, nothing else changes. The next deploy will ask you to
+> re-authorize because the script now touches Drive, not just Sheets; that's
+> expected, click through it the same way as the first authorization.
 
 ## 3. Deploy it
 
@@ -105,6 +143,9 @@ const CONFIG = {
 ```
 
 Submit a test RSVP. A row should appear in the sheet within a second or two.
+If you attach a photo, the sheet's **Photo** column gets a Drive link instead
+of the image itself — the actual files land in a Drive folder called
+**Gorgina RSVP Photos** (created automatically on the first upload).
 
 > **If you edit the script later,** you have to **Deploy → Manage deployments → edit (pencil) → Version: New version → Deploy.** Saving alone doesn't update the live URL. This trips up everyone once.
 

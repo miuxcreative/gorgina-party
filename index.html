@@ -371,6 +371,25 @@ input:focus,select:focus,textarea:focus{
 .choice input:focus-visible + span{outline:2px solid var(--cyan);outline-offset:2px}
 @media (hover:hover) and (pointer:fine){.choice span:hover{border-color:var(--glass-line-hi);color:var(--pearl)}}
 
+/* ─── photo upload ─── */
+.upload{position:relative;display:block;cursor:pointer}
+.upload input{position:absolute;opacity:0;width:1px;height:1px}
+.upload__box{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  min-height:3.6rem;padding:.6rem 1rem;border-radius:.8rem;overflow:hidden;
+  background:rgba(255,255,255,.045);border:1px dashed var(--glass-line-hi);
+  transition:border-color 160ms ease,background 160ms ease;
+}
+.upload__thumb{
+  flex:none;width:2.4rem;height:2.4rem;border-radius:.5rem;overflow:hidden;
+  background:var(--shelf);display:none;
+}
+.upload__thumb img{width:100%;height:100%;object-fit:cover}
+.upload.has-photo .upload__thumb{display:block}
+.upload__cta{font-size:.875rem;color:var(--pearl-70);text-align:center}
+.upload input:focus-visible ~ .upload__box{outline:2px solid var(--cyan);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){.upload:hover .upload__box{border-color:var(--cyan);background:rgba(255,255,255,.07)}}
+
 .nudge{
   margin:.6rem 0 0;padding:.85rem 1rem;border-radius:.75rem;font-size:.8125rem;line-height:1.55;
   background:rgba(87,216,255,.1);border:1px solid rgba(87,216,255,.3);color:var(--pearl-70);
@@ -453,7 +472,6 @@ input:focus,select:focus,textarea:focus{
       <div><dt>Where</dt><dd>The backyard<small id="specAddr">Address goes here</small></dd></div>
       <div><dt>Wear</dt><dd id="specWear">Something you'd want photographed<small>It's grass and sunshine. Plan your shoes accordingly.</small></dd></div>
       <div><dt>Bring</dt><dd id="specBring">Yourself, and an appetite that lasts eight hours.</dd></div>
-      <div><dt>Cost</dt><dd>Nothing. It's a birthday, not a fundraiser.</dd></div>
     </dl>
   </div>
 </section>
@@ -493,6 +511,11 @@ input:focus,select:focus,textarea:focus{
         <span class="n">06</span>
         <h3>Sitting still</h3>
         <p>A shady chair and zero obligations. Also valid.</p>
+      </li>
+      <li data-photo="surprises">
+        <span class="n">07</span>
+        <h3>Surprises</h3>
+        <p>Planned. Secret. Gina has no idea.</p>
       </li>
     </ul>
   </div>
@@ -541,7 +564,6 @@ input:focus,select:focus,textarea:focus{
     <p class="rule__time foil">8:00</p>
     <h2 class="rule__title">and then the lights go out</h2>
     <p>Eight o'clock is a real stop, not a suggestion. Our neighbors have been genuinely lovely about this, and the fastest way to lose a backyard is to become the house that goes until midnight.</p>
-    <p>Music off at eight. Say your goodbyes, order the car, hug it out on the sidewalk quietly. It's a Sunday — you'll thank us in the morning.</p>
     <hr class="rule__hr">
   </div>
 </section>
@@ -617,6 +639,17 @@ input:focus,select:focus,textarea:focus{
         </div>
 
         <div class="field">
+          <label for="f-photo">A picture of yourself<span class="hint">The more unhinged the better. Goes up on the party wall. Optional.</span></label>
+          <label class="upload" id="uploadWrap">
+            <input type="file" id="f-photo" accept="image/*">
+            <span class="upload__box">
+              <span class="upload__thumb"><img id="uploadThumb" alt=""></span>
+              <span class="upload__cta" id="uploadCta">Tap to add a photo</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="field">
           <label for="f-contact">Phone or email<span class="hint">Only if plans change.</span></label>
           <input type="text" id="f-contact" name="contact" placeholder="Optional">
         </div>
@@ -632,8 +665,8 @@ input:focus,select:focus,textarea:focus{
 
       <div class="done" id="done" hidden>
         <div class="done__mark" aria-hidden="true"></div>
-        <h3 id="doneTitle">You're on the list</h3>
-        <p id="doneMsg">See you Sunday the 23rd, at noon. Don't be the person who arrives at 7:45.</p>
+        <h3 id="doneTitle">You're in</h3>
+        <p id="doneMsg">Sunday, August 23, noon to eight. Clear your calendar — or just tap the button below — and don't be the person who arrives at 7:45.</p>
         <div class="btnrow">
           <button class="btn btn--glass" type="button" id="calBtn2">Add to calendar</button>
           <button class="btn btn--glass" type="button" id="shareBtn">Share the invite</button>
@@ -692,7 +725,8 @@ const CONFIG = {
       games:   "",
       music:   "",
       dancing: "",
-      rest:    ""
+      rest:    "",
+      surprises: ""
     }
   }
 };
@@ -854,6 +888,52 @@ document.querySelectorAll('input[name=transport]').forEach(function(r){
   });
 });
 
+/* ── photo upload: preview + client-side resize before send ── */
+let photoDataUrl = '';
+let photoReady = Promise.resolve();
+(function photoUpload(){
+  const input = document.getElementById('f-photo');
+  const wrap = document.getElementById('uploadWrap');
+  const thumb = document.getElementById('uploadThumb');
+  const cta = document.getElementById('uploadCta');
+  if(!input) return;
+
+  input.addEventListener('change', function(){
+    const file = input.files && input.files[0];
+    if(!file) return;
+    cta.textContent = 'Resizing…';
+
+    photoReady = new Promise(function(resolve){
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = function(){
+        URL.revokeObjectURL(url);
+        const MAX = 1600;
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if(w > MAX || h > MAX){
+          const scale = MAX / Math.max(w, h);
+          w = Math.round(w * scale); h = Math.round(h * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        photoDataUrl = canvas.toDataURL('image/jpeg', .82);
+        thumb.src = photoDataUrl;
+        wrap.classList.add('has-photo');
+        cta.textContent = 'Looking good — tap to change';
+        resolve();
+      };
+      img.onerror = function(){
+        URL.revokeObjectURL(url);
+        photoDataUrl = '';
+        cta.textContent = 'Couldn’t read that one — tap to try again';
+        resolve();
+      };
+      img.src = url;
+    });
+  });
+})();
+
 /* ── submit ── */
 const form = document.getElementById('rsvpForm');
 const statusEl = document.getElementById('status');
@@ -876,6 +956,9 @@ form.addEventListener('submit', async function(e){
     statusEl.setAttribute('data-tone','err'); return;
   }
 
+  submitBtn.disabled = true; submitBtn.textContent = 'Sending';
+  await photoReady;
+
   const payload = new URLSearchParams();
   payload.append('timestamp', new Date().toISOString());
   ['name','party_size','kids','arrival','dietary','song','contact','note'].forEach(function(k){
@@ -885,8 +968,7 @@ form.addEventListener('submit', async function(e){
   payload.append('attending', attending.value);
   const t = form.querySelector('input[name=transport]:checked');
   payload.append('transport', t ? t.value : '');
-
-  submitBtn.disabled = true; submitBtn.textContent = 'Sending';
+  payload.append('photo', photoDataUrl);
 
   try{
     if(CONFIG.endpoint){
