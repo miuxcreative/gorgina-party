@@ -130,6 +130,18 @@ body::after{
     radial-gradient(95% 70% at 50% 105%, rgba(59,123,255,.5), transparent 70%),
     linear-gradient(170deg,#0D1B45,#050A18);
 }
+/* collage: a wall of photos behind the hero, first one featured large */
+.hero__collage{
+  position:absolute;inset:0;display:grid;grid-auto-flow:dense;
+  grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;gap:3px;
+}
+.hero__collage figure{position:relative;margin:0;overflow:hidden;background:var(--shelf)}
+.hero__collage figure:first-child{grid-column:span 2;grid-row:span 2}
+.hero__collage img{width:100%;height:100%;object-fit:cover;display:block}
+/* a busy grid of photos needs more help than one atmospheric shot —
+   flat wash first, then the usual hero__media::after gradient on top */
+.hero__collage::after{content:"";position:absolute;inset:0;background:rgba(5,10,24,.52)}
+@media (min-width:600px){.hero__collage{grid-template-columns:repeat(6,1fr)}}
 .hero__in{position:relative;z-index:2;text-align:center}
 .hero__eyebrow{color:var(--pearl-70);margin:0 0 1.75rem}
 .hero__feeling{
@@ -142,7 +154,7 @@ body::after{
 .hero__name{
   margin:0;font-family:var(--f-display);font-weight:900;
   font-variation-settings:'opsz' 96;
-  font-size:clamp(3.5rem,19vw,6.5rem);line-height:.9;letter-spacing:-.03em;
+  font-size:clamp(3.3rem,16.5vw,6.5rem);line-height:.9;letter-spacing:-.03em;
   text-transform:uppercase;
 }
 .hero__age{
@@ -207,13 +219,15 @@ body::after{
 .strip__track figure img{width:100%;height:100%;object-fit:cover}
 /* duotone cohesion for a pile of mixed phone photos */
 .tone .strip__track figure::after,
+.tone .hero__collage figure::after,
 .tone .hero__media img + .grade,
 .tone .tile__media::after{
   content:"";position:absolute;inset:0;
   background:linear-gradient(140deg,rgba(59,123,255,.55),rgba(255,143,208,.32));
   mix-blend-mode:color;
 }
-.tone .strip__track figure img{filter:grayscale(1) contrast(1.06) brightness(1.02)}
+.tone .strip__track figure img,
+.tone .hero__collage img{filter:grayscale(1) contrast(1.06) brightness(1.02)}
 
 /* ═══ sections ═══ */
 .sec{padding:3.5rem 0}
@@ -660,7 +674,12 @@ const CONFIG = {
   photoTreatment: "duotone",     // "duotone" = unified blue grade | "natural" = as shot
 
   photos: {
-    hero: "",                    // e.g. "img/gina-hero.jpg" — portrait or wide both work
+    hero: "",                    // single hero photo — used only if heroCollage below is empty
+
+    heroCollage: [                // wall of photos behind the hero. 6–10 looks best, first one goes big.
+      // "img/1.jpg",
+      // "img/2.jpg",
+    ],
 
     strip: [                     // the scrolling band. 6–12 looks best.
       // "img/1.jpg",
@@ -681,9 +700,26 @@ const CONFIG = {
 /* ── photo treatment ── */
 if(CONFIG.photoTreatment !== 'duotone'){ document.body.classList.remove('tone'); }
 
-/* ── hero photo ── */
+/* ── hero photo / collage ── */
 (function heroPhoto(){
   const el = document.getElementById('heroMedia');
+  const collage = (CONFIG.photos.heroCollage || []).filter(Boolean);
+
+  if(collage.length){
+    const grid = document.createElement('div');
+    grid.className = 'hero__collage';
+    collage.slice(0, 10).forEach(function(src){
+      const fig = document.createElement('figure');
+      const img = new Image();
+      img.src = src; img.alt = ''; img.loading = 'lazy';
+      fig.appendChild(img);
+      grid.appendChild(fig);
+    });
+    el.classList.remove('hero__media--empty');
+    el.prepend(grid);
+    return;
+  }
+
   if(!CONFIG.photos.hero) return;
   const img = new Image();
   img.src = CONFIG.photos.hero;
