@@ -14,3 +14,8 @@ Any size works — the page crops to fit. JPG or PNG, keep individual
 files under ~2MB so the page loads fast on mobile data at the party.
 The same photo can be reused across heroCollage/strip/tiles — no need
 to shoot each slot separately.
+
+`og.jpg` is different from the rest — it's the 1200×630 link-preview
+image (referenced in the `og:image`/`twitter:image` meta tags at the
+top of index.html), not one of the CONFIG.photos slots. Leave it in
+place unless you're deliberately replacing the preview image.
